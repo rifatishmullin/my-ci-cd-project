@@ -1,0 +1,24 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout кода
+        uses: actions/checkout@v4
+
+      - name: Установка Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Имитация развертывания (Deploy)
+        run: |
+          echo "Подключение к серверу..."
+          echo "Копирование файлов приложения..."
+          echo "Перезапуск сервиса..."
+          echo "✅ Приложение успешно развернуто!"
