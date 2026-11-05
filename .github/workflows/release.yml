@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'          # Срабатывает только при пуше тега вида v1.0.0
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Даем роботу право создавать релизы на GitHub
+    steps:
+      - name: Checkout кода
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Скачиваем всю историю коммитов, чтобы собрать changelog
+
+      - name: Сборка артефакта
+        run: |
+          mkdir dist
+          tar -czf dist/my-app-${{ github.ref_name }}.tar.gz app/
+
+      - name: Генерация changelog
+        id: changelog
+        run: |
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          git log --pretty=format:"- %s (%h)" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Создание релиза на GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            ## Что нового (Changelog)
+            ${{ steps.changelog.outputs.changelog }}
+          files: dist/*.tar.gz # Прикрепляем наш архив к релизу
