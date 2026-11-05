@@ -1,0 +1,25 @@
+name: DB Migrations
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout кода
+        uses: actions/checkout@v4
+
+      - name: Установка Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Имитация применения миграций (Alembic)
+        run: |
+          echo "🗄️ Подключение к базе данных PostgreSQL..."
+          echo "🔄 Проверка текущей версии базы данных..."
+          echo "📦 Применение миграций: alembic upgrade head"
+          echo "✅ Миграции успешно применены!"
+          echo "🔍 Проверка статуса: alembic current"
