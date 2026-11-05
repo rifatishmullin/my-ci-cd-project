@@ -1,0 +1,25 @@
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout кода
+        uses: actions/checkout@v4
+
+      - name: Сборка Docker-образа (имитация)
+        run: |
+          echo "Сборка образа my-ci-cd-app:${{ github.sha }}"
+          
+      - name: Установка Helm
+        uses: azure/setup-helm@v4
+
+      - name: Деплой в Kubernetes через Helm (имитация)
+        run: |
+          echo "Подключение к кластеру Kubernetes (kubeconfig)..."
+          echo "Выполнение команды: helm upgrade --install my-app ./my-app --set image.tag=${{ github.sha }} --namespace production --create-namespace"
+          echo "✅ Приложение успешно развернуто в кластере Kubernetes!"
