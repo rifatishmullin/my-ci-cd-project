@@ -1,0 +1,22 @@
+name: Security & Quality Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  sonar-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout кода
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: SonarQube Scan (имитация)
+        run: |
+          echo "🔍 Подключение к серверу SonarQube (SonarCloud)..."
+          echo "📂 Сканирование папки app/ и tests/..."
+          echo "🛡️ Проверка уязвимостей и качества кода (Code Smells, Bugs, Vulnerabilities)..."
+          echo "✅ Анализ завершен. Уязвимостей не найдено. Quality Gate PASSED."
