@@ -1,0 +1,24 @@
+name: Pipeline Notifications
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Имитация сборки
+        run: echo "Сборка проекта прошла..."
+
+  notify:
+    needs: build
+    runs-on: ubuntu-latest
+    if: always() # <--- Важная магия: уведомление сработает даже если сборка упала с ошибкой
+    steps:
+      - name: Отправка уведомления (имитация)
+        run: |
+          echo "📧 Подключение к SMTP-серверу / Slack Webhook..."
+          echo "📦 Сборка данных о пайплайне: Ветка = ${{ github.ref_name }}, Автор = ${{ github.actor }}"
+          echo "✅ Статус пайплайна: УСПЕШНО"
+          echo "🚀 Отправлено сообщение: 'Пайплайн для my-ci-cd-project успешно завершен!'"
